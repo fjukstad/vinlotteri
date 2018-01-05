@@ -1,0 +1,103 @@
+<html>
+    <head>
+     <!-- Boots --> 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+       <script
+     src="https://code.jquery.com/jquery-3.1.1.min.js"
+     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+     crossorigin="anonymous"></script> 
+    <link rel="stylesheet" href="/public/css/style.css"/>
+
+    </head> 
+    <body>
+        <div class="main">         
+            <div class="container-fluid"> 
+                <a href="/"><h1 > Vinlotteri </h1></a>
+                <hr>
+                <div id="game"> 
+            <form id="participants">
+              <div class="form-group">            
+                <input type="text" class="form-control" id="participant"
+                aria-describedby="emailHelp" placeholder="Skriv inn første deltaker">
+              </div> 
+            </form>
+            <button type="button" id="new-participant" class="btn btn-info
+                btn-lg btn-block">Legg til en ny deltaker</button>
+            <button type="button" id="play" class="btn btn-success
+                btn-lg btn-block">Finn en vinner!</button>
+            </div> 
+        </div>
+    </body>
+
+    <script>
+        $( "#new-participant" ).click(function() {
+             console.log("test");
+            $("#participants").append(
+            `<div class="form-group">            
+                <input type="text" class="form-control" id="participant"
+                aria-describedby="emailHelp" placeholder="Skriv inn ny deltaker">
+              </div>`)
+        });
+
+  $( "#play" ).click(async function() {
+      
+      var participants = [];
+      var p = $( ":text" )
+      
+      for(var i = 0; i < p.length; i++){
+          participant = p[i].value
+          participants.push(participant)
+
+      }
+
+      var winner = participants[Math.floor(Math.random() * participants.length)];
+      
+      $("#game").html(
+        `
+        <div class="progress" id="progressman">
+          <div class="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar" aria-valuenow="1" aria-valuemin="0"
+          aria-valuemax="100" id="game-progress"></div>
+        </div>        
+        `
+      );
+
+      done = false;
+      while(!done){
+          done = updateProgress();
+          await sleep(50);
+      }
+
+        $("#game").html("");
+        $("#game").html(
+            `
+            <h2>Vinneren er: <b class="text-success">`+winner+`</b></h2>
+            `
+            );
+      
+  }); 
+
+function updateProgress(){
+    current = parseInt($("#game-progress").attr("aria-valuenow"));
+    n = current + 1;
+
+    if(n >= 100){
+        return true;
+    }
+
+    $("#game-progress").attr("aria-valuenow", n);
+    $("#game-progress").css("width",n+"%");
+
+    return false;
+    
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+    </script> 
+</html> 

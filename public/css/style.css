@@ -1,0 +1,14 @@
+h1 {
+    text-align: center;
+    color: #555;
+}
+
+h2 {
+    text-align: center;
+}
+
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+}
+
